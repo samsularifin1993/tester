@@ -82,4 +82,9 @@ class AdminController extends Controller
     {
         //
     }
+
+    public function panel()
+    {
+        return view('backend.panel');
+    }
 }

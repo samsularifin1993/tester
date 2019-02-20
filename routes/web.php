@@ -55,6 +55,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['guest', 'prevent.back.histo
 
 //Backend After Auth
 Route::group(['prefix' => 'admin', 'middleware' => ['prevent.back.history', 'backend']], function () {    
+    Route::get('panel', [
+        'as'    => 'admin.panel',
+        'uses'   => 'Backend\AdminController@panel'
+    ]);
+
     Route::post('logout', [
         'as'    => 'admin.logout',
         'uses'   => 'Backend\Auth\LoginController@logout'
@@ -100,8 +105,13 @@ Route::group(['middleware' => ['guest', 'prevent.back.history']], function () {
     ]);
 });
 
-//Backend After Auth
+//Frontend After Auth
 Route::group(['middleware' => ['prevent.back.history', 'frontend']], function () {    
+    Route::get('panel', [
+        'as'    => 'user.panel',
+        'uses'   => 'Frontend\UserController@panel'
+    ]);
+
     Route::post('logout', [
         'as'    => 'user.logout',
         'uses'   => 'Frontend\Auth\LoginController@logout'
