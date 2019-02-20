@@ -40,7 +40,13 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'bindings',
+            \App\Http\Middleware\CORS::class,
         ],
+
+        // 'jwt' => [
+        //     'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
+        //     'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
+        // ],
     ];
 
     /**
@@ -64,6 +70,9 @@ class Kernel extends HttpKernel
         'prevent.back.history' => \App\Http\Middleware\PreventBackHistory::class,
         'backend' => \App\Http\Middleware\Backend::class,
         'frontend' => \App\Http\Middleware\Frontend::class,
+        'jwt' => \App\Http\Middleware\JWT::class,
+        'cors' => \App\Http\Middleware\CORS::class,
+        // 'auth.jwt' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
     ];
 
     /**
