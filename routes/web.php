@@ -121,4 +121,14 @@ Route::group(['middleware' => ['prevent.back.history', 'frontend']], function ()
         'as'    => 'user.index',
         'uses'   => 'Frontend\UserController@index'
     ]);
+
+    Route::get('user', [
+        'as'    => 'user.data',
+        'uses'   => 'Frontend\UserController@data'
+    ]);
+
+    Route::get('user_getAll', [
+        'as'    => 'user.getAll',
+        'uses'   => 'Frontend\UserController@getAll'
+    ]);
 });

@@ -87,4 +87,17 @@ class UserController extends Controller
     {
         return view('frontend.panel');
     }
+
+    public function data()
+    {
+        return view('frontend.user');
+    }
+
+    public function getAll(){
+        $data = \DB::select("
+            SELECT * FROM users
+         ");
+
+        return \DataTables::of($data)->make(true);
+    }
 }
