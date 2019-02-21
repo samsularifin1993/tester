@@ -69,6 +69,41 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent.back.history', 'bac
         'as'    => 'admin.index',
         'uses'   => 'Backend\AdminController@index'
     ]);
+
+    Route::get('test', [
+        'as'    => 'test.index',
+        'uses'   => 'Backend\TestController@index'
+    ]);
+
+    Route::get('getAll', [
+        'as'    => 'test.getAll',
+        'uses'   => 'Backend\TestController@getAll'
+    ]);
+
+    Route::get('item', [
+        'as'    => 'test.item',
+        'uses'   => 'Backend\TestController@item'
+    ]);
+
+    Route::post('testStore', [
+        'as'    => 'test.store',
+        'uses'   => 'Backend\TestController@store'
+    ]);
+
+    Route::post('testUpdate', [
+        'as'    => 'test.update',
+        'uses'   => 'Backend\TestController@update'
+    ]);
+
+    Route::post('testEdit', [
+        'as'    => 'test.edit',
+        'uses'   => 'Backend\TestController@edit'
+    ]);
+
+    Route::post('testDelete', [
+        'as'    => 'test.delete',
+        'uses'   => 'Backend\TestController@delete'
+    ]);
 });
 
 

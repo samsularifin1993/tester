@@ -224,6 +224,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
     <script src="https://getbootstrap.com/docs/4.2/examples/dashboard/dashboard.js"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.preloaders.min.js') }}"></script>
 
     <script type="text/javascript">
         feather.replace();
