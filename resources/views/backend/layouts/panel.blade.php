@@ -41,7 +41,7 @@
             <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
             <ul class="navbar-nav px-3">
                 <li class="nav-item text-nowrap">
-                <a class="nav-link" href="{{ route('admin.logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Sign out</a>
+                <a class="nav-link" href="{{ route('admin.logout') }}" id="logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Sign out</a>
                 <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
@@ -132,42 +132,42 @@
             <h1 class="text-right mr-3"><strong id="hide" style="cursor:pointer;"><span class="feather-32" data-feather="chevron-up"></span></strong></h1>
                 <div class="sidebar-sticky">
                     <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">
-                        <span data-feather="home"></span>
-                        Dashboard <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="file"></span>
-                        Orders
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="shopping-cart"></span>
-                        Products
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="users"></span>
-                        Customers
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="bar-chart-2"></span>
-                        Reports
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="layers"></span>
-                        Integrations
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                            <span data-feather="home"></span>
+                            Dashboard <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="file"></span>
+                            Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="shopping-cart"></span>
+                            Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="users"></span>
+                            Customers
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="bar-chart-2"></span>
+                            Reports
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="layers"></span>
+                            Integrations
+                            </a>
+                        </li>
                     </ul>
 
                     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -176,32 +176,39 @@
                         <span data-feather="plus-circle"></span>
                     </a>
                     </h6>
+
                     <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Current month
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Last quarter
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Social engagement
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="file-text"></span>
-                        Year-end sale
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Current month
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Last quarter
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Social engagement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <span data-feather="file-text"></span>
+                            Year-end sale
+                            </a>
+                        </li>
                     </ul>
+
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-primary" id="logout_link" style="cursor:pointer;">
+                    <strong><span>Logout</span></strong>
+                    <a class="d-flex align-items-center text-primary">
+                        <span data-feather="log-out"></span>
+                    </a>
                 </div>
             </nav>
 
@@ -223,6 +230,10 @@
 
         $(document).on("click", "#hide", function(){
             $('.collapse').collapse("hide");
+        });
+
+        $(document).on("click", "#logout_link", function(){
+            $('#logout').click();
         });
     </script>
 
