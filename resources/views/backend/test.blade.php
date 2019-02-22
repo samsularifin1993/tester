@@ -56,7 +56,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <input type="hidden" id="_token_old" name="_token" value="{{ csrf_token() }}">
+                            @csrf
                             <div class="form-group">
                                 <label for="name_old">Name</label>
                                 <input type="text" class="form-control" id="name_old" name="name_old" aria-describedby="name_old" placeholder="Enter name" required>
@@ -169,7 +169,6 @@
             complete : function (data) {
                 var json = JSON.parse(data.responseText);
 
-                $('#_token_old').prop('value', '{{ csrf_token() }}');
                 $('#id').val(json[0].id);
                 $('#name_old').val(json[0].name);
             }
@@ -319,6 +318,8 @@
     });
 
     function refresh(){
+        $('input[name="_token"]').prop('value', '{{ csrf_token() }}');
+
         $('#name').removeClass('is-invalid');
         $('#error_name').empty();
         $('#error_name').removeClass('invalid-feedback');
