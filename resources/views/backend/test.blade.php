@@ -14,10 +14,10 @@
             <h5>Test</h5>
         </div>
         <div class="col-md-6 text-right">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">Add</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_modal">Add</button>
         </div>
 
-        <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
+        <div class="modal fade" id="add_modal" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <form id="form_add" method="post" enctype="multipart/form-data">
@@ -31,7 +31,7 @@
                             <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="Enter name" required>
+                                <input type="text" class="form-control" id="name" name="name" aria-describedby="name" placeholder="Enter name" required>
                                 <div id="error_name" class=""></div>
                             </div>
                         </div>
@@ -44,13 +44,13 @@
             </div>
         </div>
 
-        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <form id="form_edit" method="post" enctype="multipart/form-data">
                         <input type="hidden" id="id" name="id">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="edit">Edit</h5>
+                            <h5 class="modal-title">Edit</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
@@ -59,7 +59,7 @@
                             <input type="hidden" id="_token_old" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group">
                                 <label for="name_old">Name</label>
-                                <input type="text" class="form-control" id="name_old" aria-describedby="name_old" placeholder="Enter name" required>
+                                <input type="text" class="form-control" id="name_old" name="name_old" aria-describedby="name_old" placeholder="Enter name" required>
                                 <div id="error_name_old" class=""></div>
                             </div>
                         </div>
@@ -122,35 +122,41 @@
                         var editHref = '{{ route("test.edit") }}';
                         var deleteHref = '{{ route("test.delete") }}';
 
-                        return '<a href="#" id="edit" data-id="'+data+'" data-href="'+editHref+'" data-toggle="modal" data-target="#edit">Edit</a> | <a href="#" id="delete" data-id="'+data+'" data-href="'+deleteHref+'">Delete</a>';
+                        return '<a href="#" id="edit" data-id="'+data+'" data-href="'+editHref+'" data-toggle="modal" data-target="#edit_modal">Edit</a> | <a href="#" id="delete" data-id="'+data+'" data-href="'+deleteHref+'">Delete</a>';
                     }
                 },
             ]
         });
     });
 
-    $('#add').on('shown.bs.modal', function () {
-        
+    $('#add_modal').on('shown.bs.modal', function () {
+        refresh();
     });
 
-    $('#add').on('hide.bs.modal', function () {
-        
+    $('#add_modal').on('hide.bs.modal', function () {
+        refresh();
     });
 
-    $('#edit').on('shown.bs.modal', function () {
+    $('#edit_modal').on('shown.bs.modal', function () {
+        refresh();
+    });
+
+    $('#edit_modal').on('hide.bs.modal', function () {
+        refresh();
+    });
+
+    $(document).on("click", "#edit", function (e) {
+        e.preventDefault();
+
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             type    : 'POST',
-            url     : edit_href,
-            data    : {_token:"{{ csrf_token() }}", id: edit_id},
+            url     : $(this).data('href'),
+            data    : {_token:"{{ csrf_token() }}", id: $(this).data('id')},
             dataType: 'json',
             beforeSend: function() {
-                $.preloader.start({
-                    modal: true,
-                    src : 'sprites.png'
-                });
             },
             succes  : function () {
                 console.log('Sukses');
@@ -163,15 +169,55 @@
             complete : function (data) {
                 var json = JSON.parse(data.responseText);
 
+                $('#_token_old').prop('value', '{{ csrf_token() }}');
                 $('#id').val(json[0].id);
                 $('#name_old').val(json[0].name);
-                $.preloader.stop();
+            }
+        });
+    });
+
+    $(document).on("click", "#delete", function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type    : 'POST',
+            url     : $(this).data('href'),
+            data    : {_token:"{{ csrf_token() }}", id: $(this).data('id')},
+            dataType: 'json',
+            beforeSend: function() {
+            },
+            succes  : function () {
+                console.log('Sukses');
+            },
+            error   : function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            },
+            complete : function (data) {
+                var json = JSON.parse(data.responseText);
+
+                if(json.error == false){
+                    $("button[name='close']").click();
+                    $('#datatables').DataTable().ajax.reload();
+                }else{
+                    alert('Failed !');
+                }
             }
         });
     });
 
     $(document).on("click", "button[name='close']", function () {
         $('input').val('');
+        refresh();
+    });
+
+    $(document).on("click", "button[class='close']", function () {
+        $('input').val('');
+        refresh();
     });
 
     $("#form_add").on('submit', function(e){
@@ -194,9 +240,7 @@
                     src : 'sprites.png'
                 });
 
-                $('#name').removeClass('is-invalid');
-                $('#error_name').empty();
-                $('#error_name').removeClass('invalid-feedback');
+                refresh();
             },
             succes  : function () {
                 console.log('Sukses');
@@ -213,9 +257,9 @@
                     $("button[name='close']").click();
                     $('#datatables').DataTable().ajax.reload();
                 }else{
-                    if(json.result.soal != null){
+                    if(json.result.name != null){
                         $('#name').addClass('is-invalid');
-                        $('#error_name').html(json.result.soal[0]);
+                        $('#error_name').html(json.result.name[0]);
                         $('#error_name').addClass('invalid-feedback');
                     }
                 }
@@ -245,9 +289,7 @@
                     src : 'sprites.png'
                 });
 
-                $('#name_old').removeClass('is-invalid');
-                $('#error_name_old').empty();
-                $('#error_name_old').removeClass('invalid-feedback');
+                refresh();
             },
             succes  : function () {
                 console.log('Sukses');
@@ -264,9 +306,9 @@
                     $("button[name='close']").click();
                     $('#datatables').DataTable().ajax.reload();
                 }else{
-                    if(json.result.soal != null){
+                    if(json.result.name_old != null){
                         $('#name_old').addClass('is-invalid');
-                        $('#error_name_old').html(json.result.soal[0]);
+                        $('#error_name_old').html(json.result.name_old[0]);
                         $('#error_name_old').addClass('invalid-feedback');
                     }
                 }
@@ -275,5 +317,15 @@
             }
         });
     });
+
+    function refresh(){
+        $('#name').removeClass('is-invalid');
+        $('#error_name').empty();
+        $('#error_name').removeClass('invalid-feedback');
+
+        $('#name_old').removeClass('is-invalid');
+        $('#error_name_old').empty();
+        $('#error_name_old').removeClass('invalid-feedback');
+    }
 </script>
 @endsection

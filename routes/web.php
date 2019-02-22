@@ -70,6 +70,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent.back.history', 'bac
         'uses'   => 'Backend\AdminController@index'
     ]);
 
+
+    //Test
+
     Route::get('test', [
         'as'    => 'test.index',
         'uses'   => 'Backend\TestController@index'
@@ -102,7 +105,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent.back.history', 'bac
 
     Route::post('testDelete', [
         'as'    => 'test.delete',
-        'uses'   => 'Backend\TestController@delete'
+        'uses'   => 'Backend\TestController@destroy'
     ]);
 });
 
