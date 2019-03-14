@@ -65,6 +65,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['prevent.back.history', 'bac
         'uses'   => 'Backend\Auth\LoginController@logout'
     ]);
 
+    Route::get('password/change', [
+        'as'    => 'admin.password.showChangeForm',
+        'uses'   => 'Backend\Auth\ChangePasswordController@showChangeForm'
+    ]);
+
+    Route::post('password/change', [
+        'as'    => 'admin.password.change',
+        'uses'   => 'Backend\Auth\ChangePasswordController@change'
+    ]);
+
     Route::get('index', [
         'as'    => 'admin.index',
         'uses'   => 'Backend\AdminController@index'
@@ -153,6 +163,16 @@ Route::group(['middleware' => ['prevent.back.history', 'frontend']], function ()
     Route::post('logout', [
         'as'    => 'user.logout',
         'uses'   => 'Frontend\Auth\LoginController@logout'
+    ]);
+
+    Route::get('password/change', [
+        'as'    => 'user.password.showChangeForm',
+        'uses'   => 'Frontend\Auth\ChangePasswordController@showChangeForm'
+    ]);
+
+    Route::post('password/change', [
+        'as'    => 'user.password.change',
+        'uses'   => 'Frontend\Auth\ChangePasswordController@change'
     ]);
 
     Route::get('index', [
